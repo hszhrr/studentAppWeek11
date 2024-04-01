@@ -1,9 +1,13 @@
 package com.ubayadev.studentapp.view
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
 import com.ubayadev.studentapp.databinding.StudentListItemBinding
 import com.ubayadev.studentapp.model.Student
 
@@ -22,6 +26,20 @@ class StudentListAdapter(val studentList:ArrayList<Student>)
     override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {
         holder.binding.txtID.text = studentList[position].id
         holder.binding.txtName.text = studentList[position].name
+
+        val picasso = Picasso.Builder(holder.itemView.context)
+        picasso.listener { picasso, uri, exception -> exception.printStackTrace() }
+        picasso.build().load(studentList[position].photoUrl).into(holder.binding.imgStudent, object:
+            Callback {
+            override fun onSuccess() {
+                holder.binding.progressImage.visibility = View.INVISIBLE
+                holder.binding.imgStudent.visibility = View.INVISIBLE
+            }
+            override fun onError(e: Exception?) {
+                Log.e("picasso_error", e.toString())
+            }
+        })
+
 
         holder.binding.btnDetail.setOnClickListener {
             val action = StudentListFragmentDirections.actionStudentDetail()

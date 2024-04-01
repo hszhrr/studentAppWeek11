@@ -9,30 +9,31 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ubayadev.studentapp.R
-import com.ubayadev.studentapp.databinding.FragmentStudentListBinding
-import com.ubayadev.studentapp.viewmodel.ListViewModel
+import com.ubayadev.studentapp.databinding.FragmentCarListBinding
+import com.ubayadev.studentapp.viewmodel.CarViewModel
 
-class StudentListFragment : Fragment() {
-    private lateinit var viewModel: ListViewModel
-    private val studentListAdapter  = StudentListAdapter(arrayListOf())
-    private lateinit var binding: FragmentStudentListBinding
+
+class CarListFragment : Fragment() {
+    private lateinit var viewModel: CarViewModel
+    private val carListAdapter  = CarListAdapter(arrayListOf())
+    private lateinit var binding: FragmentCarListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentStudentListBinding.inflate(inflater,container, false)
+        binding = FragmentCarListBinding.inflate(inflater,container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this).get(ListViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(CarViewModel::class.java)
         viewModel.refresh()
 
         binding.recView.layoutManager = LinearLayoutManager(context)
-        binding.recView.adapter = studentListAdapter
+        binding.recView.adapter = carListAdapter
 
         observeViewModel()
 
@@ -46,10 +47,10 @@ class StudentListFragment : Fragment() {
     }
 
     fun observeViewModel() {
-        viewModel.studentsLD.observe(viewLifecycleOwner, Observer {
-            studentListAdapter.updateStudentList(it)
+        viewModel.carsLD.observe(viewLifecycleOwner, Observer {
+            carListAdapter.updateCarList(it)
         })
-        viewModel.studentLoadErrorLD.observe(viewLifecycleOwner, Observer {
+        viewModel.carLoadErrorLD.observe(viewLifecycleOwner, Observer {
             if(it == true) {
                 binding.txtError?.visibility = View.VISIBLE
             } else {
