@@ -33,16 +33,16 @@ class StudentListAdapter(val studentList:ArrayList<Student>)
             Callback {
             override fun onSuccess() {
                 holder.binding.progressImage.visibility = View.INVISIBLE
-                holder.binding.imgStudent.visibility = View.INVISIBLE
+                holder.binding.imgStudent.visibility = View.VISIBLE
             }
             override fun onError(e: Exception?) {
                 Log.e("picasso_error", e.toString())
             }
         })
 
-
         holder.binding.btnDetail.setOnClickListener {
-            val action = StudentListFragmentDirections.actionStudentDetail()
+            val studentId = studentList[position].id!!.toString()!!
+            val action = StudentListFragmentDirections.actionStudentDetail(studentId)
             Navigation.findNavController(it).navigate(action)
         }
 

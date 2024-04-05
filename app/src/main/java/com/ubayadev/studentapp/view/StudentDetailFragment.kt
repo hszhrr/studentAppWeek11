@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.squareup.picasso.Picasso
 import com.ubayadev.studentapp.R
 import com.ubayadev.studentapp.databinding.FragmentStudentDetailBinding
 import com.ubayadev.studentapp.viewmodel.DetailViewModel
@@ -32,8 +33,10 @@ class StudentDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val studentId = StudentDetailFragmentArgs.fromBundle(requireArguments()).studentId
+
         detailViewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
-        detailViewModel.fetch()
+        detailViewModel.fetch(studentId)
 
         observeViewModel()
     }
@@ -44,9 +47,10 @@ class StudentDetailFragment : Fragment() {
             binding.txtStudentName.setText(it.name)
             binding.txtDob.setText(it.bod)
             binding.txtPhone.setText(it.phone)
+            Picasso.get().load(it.photoUrl).into(binding.imgStudent)
             var student = it
 
-            binding.btnUpdate.setOnClickListener {Observable.timer(5, TimeUnit.SECONDS)
+            binding.btnUpdate?.setOnClickListener {Observable.timer(5, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
