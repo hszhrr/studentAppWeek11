@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
@@ -17,7 +18,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-class StudentDetailFragment : Fragment() {
+class StudentDetailFragment : Fragment(), ButtonDetailClickListener {
     private lateinit var detailViewModel: DetailViewModel
     private lateinit var binding: FragmentStudentDetailBinding
 
@@ -26,7 +27,7 @@ class StudentDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentStudentDetailBinding.inflate(inflater,container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_student_detail, container, false)
         return binding.root
     }
 
@@ -50,6 +51,7 @@ class StudentDetailFragment : Fragment() {
             Picasso.get().load(it.photoUrl).into(binding.imgStudent)
             var student = it
 
+            /*
             binding.btnUpdate?.setOnClickListener {Observable.timer(5, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -58,7 +60,17 @@ class StudentDetailFragment : Fragment() {
                     MainActivity.showNotif(student.name.toString(), "A new notification created", R.drawable.baseline_person_24)
                 }
             }
+             */
         })
     }
 
+    override fun onButtonUpdateClick(v:View) {
+        Observable.timer(5, TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                Log.d("Messages", "Five seconds")
+                MainActivity.showNotif("Notification", "A new notification created", R.drawable.baseline_person_24)
+    }
+}
 }
