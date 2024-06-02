@@ -4,6 +4,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import androidx.databinding.BindingAdapter
 import com.ubayadev.studentapp.R
 
 fun createNotificationChannel(context: Context, importance: Int, showBadge: Boolean, name: String, description: String) {

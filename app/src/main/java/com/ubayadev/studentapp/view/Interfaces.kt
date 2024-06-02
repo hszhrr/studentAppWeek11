@@ -6,7 +6,9 @@ import androidx.navigation.Navigation
 interface ButtonDetailClickListener {
     fun onButtonDetailClick(v: View) {
     }
+}
 
+interface ButtonUpdateClickListener {
     fun onButtonUpdateClick(v:View) {
     }
 }

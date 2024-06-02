@@ -18,7 +18,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-class StudentDetailFragment : Fragment(), ButtonDetailClickListener {
+class StudentDetailFragment : Fragment(), ButtonUpdateClickListener {
     private lateinit var detailViewModel: DetailViewModel
     private lateinit var binding: FragmentStudentDetailBinding
 
@@ -27,29 +27,34 @@ class StudentDetailFragment : Fragment(), ButtonDetailClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_student_detail, container, false)
+        binding = FragmentStudentDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val studentId = StudentDetailFragmentArgs.fromBundle(requireArguments()).studentId
+        if(arguments!=null) {
+            val studentId = StudentDetailFragmentArgs.fromBundle(requireArguments()).studentId
 
-        detailViewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
-        detailViewModel.fetch(studentId)
+            detailViewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
+            detailViewModel.fetch(studentId)
+            binding.listener = this
 
-        observeViewModel()
+            observeViewModel()
+        }
+
     }
 
     fun observeViewModel() {
         detailViewModel.studentLD.observe(viewLifecycleOwner, Observer {
-            binding.txtStudentid.setText(it.id)
-            binding.txtStudentName.setText(it.name)
-            binding.txtDob.setText(it.bod)
-            binding.txtPhone.setText(it.phone)
-            Picasso.get().load(it.photoUrl).into(binding.imgStudent)
-            var student = it
+            binding.student = it
+//            binding.txtStudentid.setText(it.id)
+//            binding.txtStudentName.setText(it.name)
+//            binding.txtDob.setText(it.bod)
+//            binding.txtPhone.setText(it.phone)
+//            Picasso.get().load(it.photoUrl).into(binding.imgStudent)
+//            var student = it
 
             /*
             binding.btnUpdate?.setOnClickListener {Observable.timer(5, TimeUnit.SECONDS)

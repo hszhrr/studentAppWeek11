@@ -9,7 +9,7 @@
             type="com.ubayadev.studentapp.model.Student"/>
         <variable
             name="listener"
-            type="com.ubayadev.studentapp.view.ButtonDetailClickListener"/>
+            type="com.ubayadev.studentapp.view.ButtonUpdateClickListener"/>
     </data>
 
     <FrameLayout
